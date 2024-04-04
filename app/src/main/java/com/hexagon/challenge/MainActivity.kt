@@ -3,7 +3,11 @@ package com.hexagon.challenge
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -19,7 +23,7 @@ class MainActivity : ComponentActivity() {
             HexagonChallengeTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                    AppNavigation()
+                    AppNavigation(application as HexagonApplication)
                 }
             }
         }
@@ -27,9 +31,29 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun HomePage() {
-    Text(text = "Hello, world!")
+fun HomePage(onRegisterClick: () -> Unit, onUserListClick: () -> Unit) {
     // add buttons for navigation
+    Column() {
+        Row(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(text = "Hello, world!")
+        }
+        Row(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Button(onClick = onRegisterClick) {
+                Text("Register")
+            }
+        }
+        Row(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Button(onClick = onUserListClick) {
+                Text("User List")
+            }
+        }
+    }
 
 }
 
@@ -37,6 +61,6 @@ fun HomePage() {
 @Composable
 fun GreetingPreview() {
     HexagonChallengeTheme {
-        HomePage()
+        HomePage({}, {})
     }
 }

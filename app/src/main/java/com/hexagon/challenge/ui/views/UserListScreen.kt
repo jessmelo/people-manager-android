@@ -11,11 +11,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.hexagon.challenge.HexagonApplication
 import com.hexagon.challenge.ui.theme.HexagonChallengeTheme
-import com.hexagon.challenge.ui.views.ui.components.HeaderTitle
-import com.hexagon.challenge.ui.views.ui.userList.UserListViewModel
+import com.hexagon.challenge.ui.views.components.HeaderTitle
+import com.hexagon.challenge.ui.views.userList.UserListViewModel
 
 @Composable
-fun UserListView(viewModel: UserListViewModel) {
+fun UserListScreen(viewModel: UserListViewModel) {
     HexagonChallengeTheme {
         Surface(modifier = Modifier.fillMaxSize(), color = Color.LightGray) {
             Column {
@@ -39,7 +39,7 @@ fun UserListView(viewModel: UserListViewModel) {
 @Composable
 fun UserListViewPreview() {
     HexagonChallengeTheme {
-        UserListView(
+        UserListScreen(
             viewModel = UserListViewModel((HexagonApplication()).repository)
         )
     }

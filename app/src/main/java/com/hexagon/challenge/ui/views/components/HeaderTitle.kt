@@ -1,4 +1,4 @@
-package com.hexagon.challenge.ui.views.ui.components
+package com.hexagon.challenge.ui.views.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border

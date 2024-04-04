@@ -1,4 +1,4 @@
-package com.hexagon.challenge.ui.views.ui.userList
+package com.hexagon.challenge.ui.views.userList
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
@@ -9,7 +9,6 @@ import com.hexagon.challenge.data.repository.UserRepository
 
 class UserListViewModel(private val userRepository: UserRepository): ViewModel() {
     val users: LiveData<List<User>> = userRepository.getAll().asLiveData()
-
     fun showUsers() {
         userRepository.getAll()
     }
