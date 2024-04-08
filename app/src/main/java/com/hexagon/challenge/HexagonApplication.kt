@@ -1,7 +1,6 @@
 package com.hexagon.challenge
 
 import android.app.Application
-import androidx.room.Room
 import com.hexagon.challenge.data.AppDatabase
 import com.hexagon.challenge.data.repository.UserRepository
 
@@ -15,7 +14,7 @@ class HexagonApplication : Application() {
             return UserRepository(getDatabase().userDao())
         }
 
-        fun getDatabase(): AppDatabase {
+        private fun getDatabase(): AppDatabase {
             return database
         }
     }
@@ -23,12 +22,7 @@ class HexagonApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        database = Room.databaseBuilder(
-            applicationContext,
-            AppDatabase::class.java,
-            "app_database"
-        ).build()
-
+        database = AppDatabase.getInstance(this)
         repository = UserRepository(database.userDao())
     }
 }

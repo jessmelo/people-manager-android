@@ -1,5 +1,6 @@
 package com.hexagon.challenge.ui.views.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,37 +13,21 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 
 @Composable
-fun ActiveField(
-    active: Boolean,
-    onActiveChange: (Boolean) -> Unit = {}
+fun AvatarImageField(
+    image: String,
+    onImageChange: (String) -> Unit = {},
+    galleryLauncher: () -> Unit = {}
 ) {
-    var switchValue by remember { mutableStateOf(active) }
+    var imageValue by remember { mutableStateOf(image) }
     Row(
         modifier = Modifier
             .fillMaxWidth(),
         horizontalArrangement = Arrangement.Start
     ) {
         Text(
-            text = "Ativo",
-        )
-        Switch(
-            checked = switchValue,
-            onCheckedChange = { value: Boolean->
-                switchValue = value
-                onActiveChange(value)
-            },
-            modifier = Modifier.fillMaxWidth()
-                .padding(8.dp, 4.dp)
+            text = "Avatar",
         )
     }
-}
-
-@Preview
-@Composable
-fun ActiveFieldPreview() {
-    ActiveField(true)
 }

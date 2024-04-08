@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.hexagon.challenge.data.dao.UserDao
 import com.hexagon.challenge.data.model.User
 
-@Database(entities = [User::class], version = 1, exportSchema = false)
+@Database(entities = [User::class], version = 1, exportSchema = true)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
 
@@ -20,8 +20,9 @@ abstract class AppDatabase : RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     AppDatabase::class.java,
-                    "app_database"
-                ).build()
+                    "user_database"
+                ).createFromAsset("database/user_database.db")
+                    .build()
                 INSTANCE = instance
                 instance
             }

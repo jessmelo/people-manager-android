@@ -17,11 +17,11 @@ import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import kotlin.math.min
 
 @Composable
-fun RegisterDatePicker(date: String, onDateChange: (String) -> Unit = {}) {
+fun DateTextField(date: String, onDateChange: (String) -> Unit = {}) {
     var text by remember { mutableStateOf(date) }
-    // birth date picker
     Row (
         modifier = Modifier.fillMaxWidth()
             .padding(bottom = 8.dp)
@@ -35,9 +35,11 @@ fun RegisterDatePicker(date: String, onDateChange: (String) -> Unit = {}) {
     ) {
         TextField(
             value = text,
-            onValueChange = { it ->
-                text = it
-                onDateChange(it) },
+            onValueChange = { value ->
+                if (value.length <= 10) {
+                    text = value
+                    onDateChange(value)
+                } },
             placeholder = { Text("01/01/1990") },
             modifier = Modifier.fillMaxWidth(),
             visualTransformation = DateVisualTransformation()
@@ -48,21 +50,33 @@ fun RegisterDatePicker(date: String, onDateChange: (String) -> Unit = {}) {
 @Preview
 @Composable
 fun RegisterDatePickerPreview() {
-    RegisterDatePicker("01/01/2022")
+    DateTextField("01/01/2022")
 }
 
 class DateVisualTransformation : VisualTransformation {
     override fun filter(text: AnnotatedString): TransformedText {
-        val trimmed = if (text.text.length >= 10) text.text.substring(0..9) else text.text
-        val filled = StringBuilder(trimmed).apply {
-            while (length < 10) append(' ')
+        var transformedText = ""
+        val digits = text.text.filter { it.isDigit() }
+        val trimmed = if (digits.length >= 8) digits.substring(0..7) else digits
+        for (i in trimmed.indices) {
+            transformedText += trimmed[i]
+            if (i == 1 || i == 3) transformedText += "/"
         }
-        for (i in filled.indices) {
-            when (i) {
-                2, 5 -> if (filled[i] != '/') filled.insert(i, '/')
+
+        val dateOffsetMapping = object : OffsetMapping {
+            override fun originalToTransformed(offset: Int): Int {
+                if (offset <= 2) return min(offset, transformedText.length)
+                if (offset <= 5) return min(offset + 1, transformedText.length)
+                if (offset <= 10) return min(offset + 2, transformedText.length)
+                return transformedText.length
+            }
+
+            override fun transformedToOriginal(offset: Int): Int {
+                if (offset <= 2) return offset
+                if (offset <= 5) return offset - 1
+                return offset - 2
             }
         }
-        val newText = filled.trimEnd().toString()
-        return TransformedText(AnnotatedString(newText), OffsetMapping.Identity)
+        return TransformedText(AnnotatedString(transformedText), dateOffsetMapping)
     }
 }

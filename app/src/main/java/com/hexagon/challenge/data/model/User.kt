@@ -1,5 +1,7 @@
 package com.hexagon.challenge.data.model
 
+import android.content.Context
+import android.graphics.Bitmap
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -7,7 +9,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "user")
 data class User(
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
+    val id: Int = 0,
     @ColumnInfo(name = "name")
     val name: String,
     @ColumnInfo(name = "birth_date")
@@ -17,7 +19,7 @@ data class User(
     @ColumnInfo(name = "city")
     val city: String,
     @ColumnInfo(name = "avatar")
-    val avatar: String,
-    @ColumnInfo(name = "active")
+    val avatar: String? = null,
+    @ColumnInfo(name = "active", defaultValue = "0")
     val active: Boolean
 )

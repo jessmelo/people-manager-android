@@ -64,6 +64,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.fragment.ktx)
     implementation(libs.androidx.navigation.compose)
+    implementation("androidx.compose.runtime:runtime-livedata:1.6.4")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

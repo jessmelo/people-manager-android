@@ -3,6 +3,7 @@ package com.hexagon.challenge.data.dao
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.hexagon.challenge.data.model.User
@@ -13,6 +14,9 @@ interface UserDao {
     @Query("SELECT * FROM user")
     fun getAll(): Flow<List<User>>
 
+    @Query("SELECT * FROM user WHERE id = :id")
+    fun getById(id: Int): Flow<User>
+
     @Query("SELECT * FROM user WHERE id IN (:userIds)")
     fun loadAllByIds(userIds: IntArray): List<User>
 
@@ -20,10 +24,10 @@ interface UserDao {
     fun findByName(name: String): User
 
     @Update
-    fun update(user: User)
+    suspend fun update (user: User): Int
 
-    @Insert
-    fun insert(user: User)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(user: User): Long
 
     @Insert
     fun insertAll(vararg users: User)
