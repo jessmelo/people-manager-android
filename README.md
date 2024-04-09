@@ -9,7 +9,7 @@ Arquitetura do app:
   - Activity única que recebe o componente de navegação principal (MainActivity)
   - Para o modelo de dados foi utilizado o banco de dados SQLite com camada de abstração da biblioteca Room
   - Repository e DAO (Data Access Object) para manipulação dos dados
-  - Componentes de UI modularizados para um código limpo e estruturado (diretório: ui/components)
+  - Componentes de UI modularizados para um código limpo e estruturado (diretório: ui/views/components)
     
 Funcionalidades do aplicativo:
   - Adicionar novo usuário
