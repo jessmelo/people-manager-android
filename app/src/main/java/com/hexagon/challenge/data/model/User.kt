@@ -18,7 +18,7 @@ data class User(
     @ColumnInfo(name = "city")
     val city: String,
     @ColumnInfo(name = "avatar", typeAffinity = ColumnInfo.BLOB)
-    val avatar: ByteArray? = null,
+    val avatar: ByteArray? = ByteArray(0),
     @ColumnInfo(name = "active", defaultValue = "0")
     val active: Boolean
 )

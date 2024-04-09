@@ -6,7 +6,7 @@ import com.hexagon.challenge.data.repository.UserRepository
 import com.hexagon.challenge.ui.SharedViewModel
 
 class HexagonApplication : Application() {
-    val sharedViewModel: SharedViewModel by lazy { SharedViewModel() }
+    lateinit var sharedViewModel: SharedViewModel
     lateinit var repository: UserRepository
 
     companion object {
@@ -18,5 +18,6 @@ class HexagonApplication : Application() {
 
         database = AppDatabase.getInstance(this)
         repository = UserRepository(database.userDao())
+        sharedViewModel = SharedViewModel()
     }
 }

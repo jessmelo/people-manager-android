@@ -5,7 +5,6 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -25,7 +24,9 @@ import com.hexagon.challenge.ui.SharedViewModel
 import com.hexagon.challenge.ui.theme.HexagonChallengeTheme
 
 class MainActivity : ComponentActivity() {
-    private val sharedViewModel: SharedViewModel by viewModels()
+    private val sharedViewModel: SharedViewModel by lazy {
+        (application as HexagonApplication).sharedViewModel
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +34,7 @@ class MainActivity : ComponentActivity() {
         val pickImageLauncherRegister = registerForActivityResult(
             ActivityResultContracts.GetContent()) { uri ->
             if (uri != null) {
+                Log.d("MainActivity", "Image URI: $uri")
                 sharedViewModel.updatePickedImageUri(uri.toString())
             } else {
                 Log.d("MainActivity", "Image URI is null")

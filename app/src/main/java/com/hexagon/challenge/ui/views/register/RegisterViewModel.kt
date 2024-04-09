@@ -1,20 +1,16 @@
 package com.hexagon.challenge.ui.views.register
 
+import android.content.Context
 import android.net.Uri
 import android.util.Log
 import android.util.Log.INFO
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.hexagon.challenge.data.model.ErrorSaving
 import com.hexagon.challenge.data.model.User
 import com.hexagon.challenge.data.repository.UserRepository
 import com.hexagon.challenge.utils.FormatData
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
-import java.io.File
 
 class RegisterViewModel(
     private val repository: UserRepository
@@ -46,8 +42,19 @@ class RegisterViewModel(
         userModel = userModel.copy(city = city)
     }
 
-    fun updateAvatar(avatar: String) {
-        val avatarByteArray = File(avatar).readBytes()
+    fun updateAvatar(avatar: String, context: Context) {
+        var avatarByteArray = ByteArray(0)
+        try {
+            context.contentResolver.openInputStream(Uri.parse(avatar))?.buffered().use {
+                if (it != null) {
+                    avatarByteArray = it.readBytes()
+                } else {
+                    Log.d("RegisterViewModel", "Error opening image file: InputStream is null")
+                }
+            }
+        } catch (e: Exception) {
+            Log.d("RegisterViewModel", "Error opening image file: $e")
+        }
         userModel = userModel.copy(avatar = avatarByteArray)
     }
 

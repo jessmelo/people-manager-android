@@ -1,5 +1,6 @@
 package com.hexagon.challenge.ui.views.register
 
+import android.content.Context
 import androidx.activity.result.ActivityResultLauncher
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -21,6 +22,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.hexagon.challenge.ui.SharedViewModel
@@ -44,10 +46,11 @@ fun RegisterScreen(
     val state = rememberScrollState()
     LaunchedEffect(Unit) { state.animateScrollTo(100) }
 
-    val pickedImageUri by sharedViewModel.pickedImageUri.collectAsState()
+    val pickedImageUri by sharedViewModel.pickedImageUri.collectAsState(coroutineScope.coroutineContext)
 
     if (pickedImageUri != null) {
-        viewModel.updateAvatar(pickedImageUri!!)
+        val context: Context = LocalContext.current.applicationContext
+        viewModel.updateAvatar(pickedImageUri!!, context)
         sharedViewModel.updatePickedImageUri(null)
     }
 
