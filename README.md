@@ -1,7 +1,7 @@
 **Teste de Habilidades Android - Hexagon**
 
-Arquitetura:
-  - MVVM (
+Arquitetura do app:
+  - MVVM 
       - Cada View possui seu ViewModel (ex.: RegisterScreen e RegisterViewModel)
       - View recebe input do usuário e representa os dados para o usuário
       - ViewModel atualiza o estado dos objetos e atualiza o modelo através do UserRepository
