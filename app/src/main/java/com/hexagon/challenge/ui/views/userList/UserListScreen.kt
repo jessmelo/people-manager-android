@@ -14,10 +14,15 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.painter.BitmapPainter
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -26,11 +31,13 @@ import com.hexagon.challenge.R
 import com.hexagon.challenge.ui.theme.BabyBlueDark
 import com.hexagon.challenge.ui.theme.HexagonChallengeTheme
 import com.hexagon.challenge.ui.views.components.HeaderTitle
+import com.hexagon.challenge.utils.FormatData
 import java.util.Locale
 
 @Composable
 fun UserListScreen(viewModel: UserListViewModel, onEditUserClick: (String) -> Unit) {
     val users by viewModel.users.observeAsState(initial = null)
+    val defaultAvatar = painterResource(R.drawable.default_avatar)
 
     Surface(modifier = Modifier.fillMaxSize(), color = BabyBlueDark) {
         if (users == null) {
@@ -59,9 +66,16 @@ fun UserListScreen(viewModel: UserListViewModel, onEditUserClick: (String) -> Un
                         Text(text = "Nenhum usuário cadastrado ainda.")
                     } else {
                         for (user in users!!) {
+                            val bitmapImage: Painter =
+                                if (user.avatar != null && user.avatar.isNotEmpty()) {
+                                    BitmapPainter(FormatData.byteArrayToImageBitmap(user.avatar))
+                                } else {
+                                    defaultAvatar
+                                }
+
                             Box {
                                 Image(
-                                    painter = painterResource(id = R.drawable.default_avatar),
+                                    painter = bitmapImage,
                                     contentDescription = "Avatar",
                                     modifier = Modifier
                                         .width(50.dp)
