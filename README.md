@@ -20,3 +20,8 @@ Funcionalidades do aplicativo:
 Frameworks utilizadas:
  - Componentes UI do Jetpack Compose (Navegação e Componentes visuais)
  - Biblioteca Room para persistência de dados na memória local
+
+TODO:
+  - Terminar funcionalides
+  - Adicionar testes
+  - Ajustar design do app
