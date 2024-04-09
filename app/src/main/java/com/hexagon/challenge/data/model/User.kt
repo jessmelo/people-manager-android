@@ -1,11 +1,10 @@
 package com.hexagon.challenge.data.model
 
-import android.content.Context
-import android.graphics.Bitmap
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+@Suppress("ArrayInDataClass")
 @Entity(tableName = "user")
 data class User(
     @PrimaryKey(autoGenerate = true)
@@ -18,8 +17,8 @@ data class User(
     val cpf: String,
     @ColumnInfo(name = "city")
     val city: String,
-    @ColumnInfo(name = "avatar")
-    val avatar: String? = null,
+    @ColumnInfo(name = "avatar", typeAffinity = ColumnInfo.BLOB)
+    val avatar: ByteArray? = null,
     @ColumnInfo(name = "active", defaultValue = "0")
     val active: Boolean
 )

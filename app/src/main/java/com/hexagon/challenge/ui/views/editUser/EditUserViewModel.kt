@@ -23,7 +23,7 @@ class EditUserViewModel(
         birthDate = "",
         cpf = "",
         city = "",
-        avatar = "",
+        avatar = ByteArray(0),
         active = false
     )
 
@@ -48,7 +48,7 @@ class EditUserViewModel(
         userModel = userModel.copy(city = city)
     }
 
-    fun updateAvatar(avatar: String) {
+    fun updateAvatar(avatar: ByteArray) {
         userModel = userModel.copy(avatar = avatar)
     }
 

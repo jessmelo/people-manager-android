@@ -32,67 +32,65 @@ import java.util.Locale
 fun UserListScreen(viewModel: UserListViewModel, onEditUserClick: (String) -> Unit) {
     val users by viewModel.users.observeAsState(initial = null)
 
-    HexagonChallengeTheme {
-        Surface(modifier = Modifier.fillMaxSize(), color = BabyBlueDark) {
-            if (users == null) {
-                // Display loading object
-                Column(
+    Surface(modifier = Modifier.fillMaxSize(), color = BabyBlueDark) {
+        if (users == null) {
+            // Display loading object
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(BabyBlueDark)
+                    .padding(16.dp)
+            ) {
+                Text(text = "Carregando usuários...")
+            }
+        } else {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(BabyBlueDark)
+                    .padding(16.dp)
+            ) {
+                HeaderTitle(title = "Usuários cadastrados")
+                Row(
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(BabyBlueDark)
-                        .padding(16.dp)
                 ) {
-                    Text(text = "Carregando usuários...")
-                }
-            } else {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(BabyBlueDark)
-                        .padding(16.dp)
-                ) {
-                    HeaderTitle(title = "Usuários cadastrados")
-                    Row(
-                        modifier = Modifier
-                            .fillMaxSize()
-                    ) {
-                        if (users!!.isEmpty()) {
-                            Text(text = "Nenhum usuário cadastrado ainda.")
-                        } else {
-                            for (user in users!!) {
-                                Box {
-                                    Image(
-                                        painter = painterResource(id = R.drawable.default_avatar),
-                                        contentDescription = "Avatar",
-                                        modifier = Modifier
-                                            .width(50.dp)
-                                            .height(50.dp)
-                                            .clip(RoundedCornerShape(15.dp))
+                    if (users!!.isEmpty()) {
+                        Text(text = "Nenhum usuário cadastrado ainda.")
+                    } else {
+                        for (user in users!!) {
+                            Box {
+                                Image(
+                                    painter = painterResource(id = R.drawable.default_avatar),
+                                    contentDescription = "Avatar",
+                                    modifier = Modifier
+                                        .width(50.dp)
+                                        .height(50.dp)
+                                        .clip(RoundedCornerShape(15.dp))
+                                )
+                                Column {
+                                    Text(
+                                        text = user.name.uppercase(Locale.getDefault()),
+                                        minLines = 1
                                     )
-                                    Column {
-                                        Text(
-                                            text = user.name.uppercase(Locale.getDefault()),
-                                            minLines = 1
-                                        )
-                                        Text(text = "CPF: ${user.cpf}", minLines = 1)
-                                        Text(
-                                            text = "Data de Nascimento: ${user.birthDate}",
-                                            minLines = 1
-                                        )
-                                        Text(text = "Cidade: ${user.city}", minLines = 1)
-                                    }
-                                    Button(
-                                        onClick = { onEditUserClick(user.id.toString()) },
-                                        modifier = Modifier.padding(8.dp)
-                                    ) {
-                                        Text(text = "Editar")
-                                    }
-                                    Button(
-                                        onClick = { viewModel.deleteUser(user) },
-                                        modifier = Modifier.padding(8.dp)
-                                    ) {
-                                        Text(text = "Excluir")
-                                    }
+                                    Text(text = "CPF: ${user.cpf}", minLines = 1)
+                                    Text(
+                                        text = "Data de Nascimento: ${user.birthDate}",
+                                        minLines = 1
+                                    )
+                                    Text(text = "Cidade: ${user.city}", minLines = 1)
+                                }
+                                Button(
+                                    onClick = { onEditUserClick(user.id.toString()) },
+                                    modifier = Modifier.padding(8.dp)
+                                ) {
+                                    Text(text = "Editar")
+                                }
+                                Button(
+                                    onClick = { viewModel.deleteUser(user) },
+                                    modifier = Modifier.padding(8.dp)
+                                ) {
+                                    Text(text = "Excluir")
                                 }
                             }
                         }

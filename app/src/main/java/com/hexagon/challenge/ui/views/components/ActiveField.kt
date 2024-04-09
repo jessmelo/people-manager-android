@@ -1,6 +1,7 @@
 package com.hexagon.challenge.ui.views.components
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -21,10 +22,9 @@ fun ActiveField(
     onActiveChange: (Boolean) -> Unit = {}
 ) {
     var switchValue by remember { mutableStateOf(active) }
-    Row(
+    Box(
         modifier = Modifier
             .fillMaxWidth(),
-        horizontalArrangement = Arrangement.Start
     ) {
         Text(
             text = "Ativo",

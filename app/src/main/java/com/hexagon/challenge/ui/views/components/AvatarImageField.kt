@@ -1,33 +1,74 @@
 package com.hexagon.challenge.ui.views.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Switch
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.BitmapPainter
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
+import com.hexagon.challenge.R
+import com.hexagon.challenge.ui.theme.BabyBlueDark
+import com.hexagon.challenge.utils.FormatData
+
 
 @Composable
 fun AvatarImageField(
-    image: String,
-    onImageChange: (String) -> Unit = {},
+    image: ByteArray,
     galleryLauncher: () -> Unit = {}
 ) {
-    var imageValue by remember { mutableStateOf(image) }
+    val imageValue by remember { mutableStateOf(image) }
+
+    val defaultAvatar = painterResource(R.drawable.default_avatar)
+
+    val bitmapImage: Painter by remember(imageValue) {
+        derivedStateOf {
+            if (imageValue.isNotEmpty()) {
+                BitmapPainter(FormatData.byteArrayToImageBitmap(imageValue))
+            } else {
+                defaultAvatar
+            }
+        }
+    }
     Row(
         modifier = Modifier
             .fillMaxWidth(),
-        horizontalArrangement = Arrangement.Start
+        horizontalArrangement = Arrangement.Center
     ) {
-        Text(
-            text = "Avatar",
-        )
+        Surface(
+            onClick = galleryLauncher,
+        ) {
+            Box(
+                modifier = Modifier
+                    .padding(8.dp)
+            ) {
+                Image(
+                    painter = bitmapImage,
+                    contentDescription = "User Avatar",
+                    modifier = Modifier
+                        .size(100.dp)
+                        .padding(4.dp)
+                        .padding(bottom = 4.dp)
+                        .border(
+                            width = 2.dp,
+                            color = BabyBlueDark,
+                            shape = CircleShape
+                        )
+                )
+            }
+        }
     }
 }

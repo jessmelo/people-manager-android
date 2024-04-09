@@ -44,7 +44,6 @@ fun EditUserScreen(viewModel: EditUserViewModel) {
     val state = rememberScrollState()
     LaunchedEffect(Unit) { state.animateScrollTo(100) }
 
-    HexagonChallengeTheme {
         Surface(modifier = Modifier.fillMaxSize(), color = Color.LightGray) {
             if (user == null) {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -120,7 +119,6 @@ fun EditUserScreen(viewModel: EditUserViewModel) {
                         }
                     }
                 }
-            }
         }
     }
 }

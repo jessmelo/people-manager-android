@@ -1,7 +1,6 @@
 package com.hexagon.challenge.ui.views.register
 
 import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.PickVisualMediaRequest
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -24,9 +23,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.hexagon.challenge.HexagonApplication
+import com.hexagon.challenge.ui.SharedViewModel
 import com.hexagon.challenge.ui.theme.BabyBlueDark
-import com.hexagon.challenge.ui.theme.HexagonChallengeTheme
 import com.hexagon.challenge.ui.views.components.ActiveField
 import com.hexagon.challenge.ui.views.components.AvatarImageField
 import com.hexagon.challenge.ui.views.components.CpfTextField
@@ -37,87 +35,93 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun RegisterScreen(
-    viewModel: RegisterViewModel
+    viewModel: RegisterViewModel,
+    sharedViewModel: SharedViewModel,
+    pickImageLauncherRegister: ActivityResultLauncher<String>
 ) {
     val coroutineScope = rememberCoroutineScope()
     val errorSaving by viewModel.errorSaving.collectAsState(coroutineScope.coroutineContext)
     val state = rememberScrollState()
     LaunchedEffect(Unit) { state.animateScrollTo(100) }
 
-    HexagonChallengeTheme {
-        Surface(modifier = Modifier.fillMaxSize(), color = Color.LightGray) {
+    val pickedImageUri by sharedViewModel.pickedImageUri.collectAsState()
+
+    if (pickedImageUri != null) {
+        viewModel.updateAvatar(pickedImageUri!!)
+        sharedViewModel.updatePickedImageUri(null)
+    }
+
+    Surface(modifier = Modifier.fillMaxSize(), color = Color.LightGray) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
+            HeaderTitle(title = "Cadastrar Usuário")
+
             Column(
                 modifier = Modifier
                     .fillMaxSize()
+                    .background(BabyBlueDark)
+                    .padding(16.dp)
+                    .verticalScroll(state),
             ) {
-                HeaderTitle(title = "Cadastrar Usuário")
-
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(BabyBlueDark)
-                        .padding(16.dp)
-                        .verticalScroll(state),
-                ) {
-                    if (errorSaving.error) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .background(Color.White)
-                                .padding(top = 4.dp),
-                            horizontalArrangement = Arrangement.Start,
-                        ) {
-                            Text(
-                                modifier = Modifier
-                                    .padding(8.dp)
-                                    .fillMaxWidth(),
-                                text = errorSaving.message,
-                                color = Color.Red
-                            )
-                        }
-                    }
-                    AvatarImageField(
-                        image = viewModel.userModel.avatar ?: "",
-                        onImageChange = viewModel::updateAvatar,
-                        galleryLauncher = {
-                            viewModel.pickImage()
-                        }
-                    )
-                    RegisterTextField(
-                        title = "Nome",
-                        placeholder = "Ana Maria",
-                        textValue = viewModel.userModel.name,
-                        onValueChange = viewModel::updateName
-                    )
-                    CpfTextField(
-                        cpf = viewModel.userModel.cpf,
-                        onValueChange = viewModel::updateCpf
-                    )
-                    DateTextField(
-                        date = viewModel.userModel.birthDate,
-                        onDateChange = viewModel::updateBirthDate
-                    )
-                    RegisterTextField(
-                        title = "Cidade",
-                        placeholder = "São Paulo",
-                        textValue = viewModel.userModel.city,
-                        onValueChange = viewModel::updateCity
-                    )
-                    ActiveField(
-                        active = viewModel.userModel.active,
-                        onActiveChange = viewModel::updateActive
-                    )
+                if (errorSaving.error) {
                     Row(
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(Color.White)
+                            .padding(top = 4.dp),
+                        horizontalArrangement = Arrangement.Start,
                     ) {
-                        Button(
-                            onClick = { coroutineScope.launch { viewModel.registerUser() } },
+                        Text(
                             modifier = Modifier
-                                .padding(16.dp)
-                                .height(50.dp)
-                        ) {
-                            Text("Salvar")
-                        }
+                                .padding(8.dp)
+                                .fillMaxWidth(),
+                            text = errorSaving.message,
+                            color = Color.Red
+                        )
+                    }
+                }
+                AvatarImageField(
+                    image = viewModel.userModel.avatar ?: ByteArray(0),
+                    galleryLauncher = {
+                        pickImageLauncherRegister.launch("image/*")
+                    }
+                )
+                RegisterTextField(
+                    title = "Nome",
+                    placeholder = "Ana Maria",
+                    textValue = viewModel.userModel.name,
+                    onValueChange = viewModel::updateName
+                )
+                CpfTextField(
+                    cpf = viewModel.userModel.cpf,
+                    onValueChange = viewModel::updateCpf
+                )
+                DateTextField(
+                    date = viewModel.userModel.birthDate,
+                    onDateChange = viewModel::updateBirthDate
+                )
+                RegisterTextField(
+                    title = "Cidade",
+                    placeholder = "São Paulo",
+                    textValue = viewModel.userModel.city,
+                    onValueChange = viewModel::updateCity
+                )
+                ActiveField(
+                    active = viewModel.userModel.active,
+                    onActiveChange = viewModel::updateActive
+                )
+                Row(
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Button(
+                        onClick = { coroutineScope.launch { viewModel.registerUser() } },
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .height(50.dp)
+                    ) {
+                        Text("Salvar")
                     }
                 }
             }
@@ -128,11 +132,15 @@ fun RegisterScreen(
 @Preview(showBackground = true)
 @Composable
 fun RegisterViewPreview() {
+/*
     HexagonChallengeTheme {
         RegisterScreen(
             RegisterViewModel(
-                HexagonApplication().repository
-            )
+                HexagonApplication().repository,
+            ),
+            SharedViewModel(),
+
         )
     }
+*/
 }

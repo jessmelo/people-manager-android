@@ -1,7 +1,6 @@
 package com.hexagon.challenge
 
 import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.PickVisualMediaRequest
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -18,16 +17,20 @@ import com.hexagon.challenge.ui.views.userList.UserListViewModel
 @Composable
 fun AppNavigation(
     application: HexagonApplication,
+    pickImageLauncherRegister: ActivityResultLauncher<String>
 ) {
     val navController = rememberNavController()
     val userRepository = application.repository
+    val sharedViewModel = application.sharedViewModel
 
     NavHost(navController, startDestination = "home") {
         composable("home") { HomePage(
             onRegisterClick = { navController.navigate("register") },
             onUserListClick = { navController.navigate("userList") }
         ) }
-        composable("register") { RegisterScreen(RegisterViewModel(userRepository)) }
+        composable("register") { RegisterScreen(RegisterViewModel(userRepository),
+            sharedViewModel, pickImageLauncherRegister
+        ) }
         composable("userList") { UserListScreen(UserListViewModel(userRepository),
             onEditUserClick = { userID: String -> navController.navigate("editUser/$userID") }
         ) }
