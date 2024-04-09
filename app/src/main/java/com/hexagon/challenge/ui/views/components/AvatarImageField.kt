@@ -3,15 +3,13 @@ package com.hexagon.challenge.ui.views.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -51,32 +49,20 @@ fun AvatarImageField(
             .fillMaxWidth(),
         horizontalArrangement = Arrangement.Center
     ) {
-        Surface(
-            onClick = galleryLauncher,
+        Image(
+            painter = bitmapImage,
+            contentDescription = "User Avatar",
             modifier = Modifier
+                .size(100.dp)
+                .padding(4.dp)
                 .background(Color.Transparent)
-        ) {
-            Box(
-                modifier = Modifier
-                    .padding(8.dp)
-                    .height(108.dp)
-                    .background(Color.Transparent)
-            ) {
-                Image(
-                    painter = bitmapImage,
-                    contentDescription = "User Avatar",
-                    modifier = Modifier
-                        .size(100.dp)
-                        .padding(4.dp)
-                        .background(Color.Transparent)
-                        .clip(CircleShape)
-                        .border(
-                            width = 2.dp,
-                            color = BabyBlueDark,
-                            shape = CircleShape
-                        )
+                .clip(CircleShape)
+                .border(
+                    width = 2.dp,
+                    color = BabyBlueDark,
+                    shape = CircleShape
                 )
-            }
-        }
+                .clickable { galleryLauncher() }
+        )
     }
 }

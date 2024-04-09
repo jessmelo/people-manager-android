@@ -3,6 +3,11 @@ plugins {
     alias(libs.plugins.jetbrainsKotlinAndroid)
     id("kotlin-android")
     id("kotlin-kapt")
+    id(libs.androix.room)
+}
+
+room {
+    schemaDirectory("$projectDir/schemas")
 }
 
 android {

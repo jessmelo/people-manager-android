@@ -106,7 +106,8 @@ class RegisterViewModel(
 
             if (newUserID > 0) {
                 Log.println(INFO, "RegisterViewModel", "User registered successfully with id: $newUserID")
-                userModel = User(
+                userModel = userModel.copy(
+                    avatar = ByteArray(0),
                     name = "",
                     birthDate = "",
                     cpf = "",

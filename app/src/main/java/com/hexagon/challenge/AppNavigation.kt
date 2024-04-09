@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.hexagon.challenge.ui.HomeScreen
 import com.hexagon.challenge.ui.views.editUser.EditUserScreen
 import com.hexagon.challenge.ui.views.editUser.EditUserViewModel
 import com.hexagon.challenge.ui.views.register.RegisterScreen
@@ -24,7 +25,7 @@ fun AppNavigation(
     val sharedViewModel = application.sharedViewModel
 
     NavHost(navController, startDestination = "home") {
-        composable("home") { HomePage(
+        composable("home") { HomeScreen(
             onRegisterClick = { navController.navigate("register") },
             onUserListClick = { navController.navigate("userList") }
         ) }
