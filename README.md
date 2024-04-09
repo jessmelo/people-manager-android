@@ -19,10 +19,10 @@ Funcionalidades do aplicativo:
   - (TODO) Ativar ou desativar usuário 
 
 Frameworks utilizadas:
- - Componentes UI do Jetpack Compose (Navegação e Componentes visuais)
+ - Componentes UI do Jetpack Compose (Navegação e Componentes visuais do Material 3)
  - Biblioteca Room para persistência de dados na memória local
 
 TODO:
-  - Terminar funcionalidades
+  - Terminar implementação de funcionalidades
   - Adicionar testes
   - Ajustar design do app
