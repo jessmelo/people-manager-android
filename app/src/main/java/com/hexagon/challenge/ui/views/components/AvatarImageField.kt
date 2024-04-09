@@ -48,17 +48,19 @@ fun AvatarImageField(
 
     Row(
         modifier = Modifier
-            .fillMaxWidth()
-            .height(108.dp),
+            .fillMaxWidth(),
         horizontalArrangement = Arrangement.Center
     ) {
         Surface(
             onClick = galleryLauncher,
+            modifier = Modifier
+                .background(Color.Transparent)
         ) {
             Box(
                 modifier = Modifier
                     .padding(8.dp)
-                    .height(100.dp)
+                    .height(108.dp)
+                    .background(Color.Transparent)
             ) {
                 Image(
                     painter = bitmapImage,
@@ -66,7 +68,6 @@ fun AvatarImageField(
                     modifier = Modifier
                         .size(100.dp)
                         .padding(4.dp)
-                        .padding(bottom = 4.dp)
                         .background(Color.Transparent)
                         .clip(CircleShape)
                         .border(
