@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.hexagon.challenge.data.dao.UserDao
 import com.hexagon.challenge.data.model.User
 
-@Database(entities = [User::class], version = 1, exportSchema = true)
+@Database(entities = [User::class], version = 2, exportSchema = true)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
 
