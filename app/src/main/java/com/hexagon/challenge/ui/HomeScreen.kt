@@ -22,7 +22,9 @@ import com.hexagon.challenge.ui.theme.HexagonChallengeTheme
 import java.io.InputStream
 
 @Composable
-fun HomeScreen(onRegisterClick: () -> Unit, onUserListClick: () -> Unit) {
+fun HomeScreen(
+    onRegisterClick: () -> Unit, onUserListClick: () -> Unit
+) {
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,

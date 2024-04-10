@@ -59,7 +59,7 @@ fun AvatarImageField(
                 .clip(CircleShape)
                 .border(
                     width = 2.dp,
-                    color = BabyBlueDark,
+                    color = Color.White,
                     shape = CircleShape
                 )
                 .clickable { galleryLauncher() }

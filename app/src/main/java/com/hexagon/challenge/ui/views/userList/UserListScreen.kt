@@ -51,7 +51,7 @@ fun UserListScreen(viewModel: UserListViewModel, onEditUserClick: (String) -> Un
             modifier = Modifier
                 .fillMaxSize()
         ) {
-            HeaderTitle(title = "Cadastrar Usuário")
+            HeaderTitle(title = "Usuários cadastrados")
             if (users == null) {
                 Column(
                     modifier = Modifier

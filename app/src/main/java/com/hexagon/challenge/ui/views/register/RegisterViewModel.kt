@@ -68,19 +68,23 @@ class RegisterViewModel(
 
     suspend fun registerUser() {
         if (userModel.name.isEmpty()) {
-            updateErrorSaving(ErrorSaving(error = true, message = "Erro ao registrar usuário: Nome não pode ser vazio"))
+            updateErrorSaving(ErrorSaving(error = true, message = "Erro ao registrar usuário: " +
+                    "Nome não pode ser vazio"))
             return
         }
         if (userModel.birthDate.isEmpty()) {
-            updateErrorSaving(ErrorSaving(error = true, message = "Erro ao registrar usuário: Data de nascimento não pode ser vazia"))
+            updateErrorSaving(ErrorSaving(error = true, message = "Erro ao registrar usuário: " +
+                    "Data de nascimento não pode ser vazia"))
             return
         }
         if (userModel.cpf.isEmpty()) {
-            updateErrorSaving(ErrorSaving(error = true, message = "Erro ao registrar usuário: CPF não pode ser vazio"))
+            updateErrorSaving(ErrorSaving(error = true, message = "Erro ao registrar usuário: " +
+                    "CPF não pode ser vazio"))
             return
         }
         if (userModel.city.isEmpty()) {
-            updateErrorSaving(ErrorSaving(error = true, message = "Erro ao registrar usuário: Cidade não pode ser vazia"))
+            updateErrorSaving(ErrorSaving(error = true, message = "Erro ao registrar usuário: " +
+                    "Cidade não pode ser vazia"))
             return
         }
         if (userModel.name.isNotEmpty() && userModel.birthDate.isNotEmpty() &&
@@ -127,7 +131,6 @@ class RegisterViewModel(
                 city = "",
                 active = false
             )
-            // go to main screen
         }
     }
 }

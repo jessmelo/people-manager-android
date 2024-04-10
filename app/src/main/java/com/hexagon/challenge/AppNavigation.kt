@@ -31,7 +31,8 @@ fun AppNavigation(
         ) }
         composable("register") { RegisterScreen(RegisterViewModel(userRepository),
             sharedViewModel, pickImageLauncherRegister
-        ) }
+        ) { navController.navigate("home") }
+        }
         composable("userList") { UserListScreen(UserListViewModel(userRepository),
             onEditUserClick = { userID: String -> navController.navigate("editUser/$userID") }
         ) }

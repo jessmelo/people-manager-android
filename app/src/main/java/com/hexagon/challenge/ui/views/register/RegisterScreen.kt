@@ -38,12 +38,12 @@ import kotlinx.coroutines.launch
 fun RegisterScreen(
     viewModel: RegisterViewModel,
     sharedViewModel: SharedViewModel,
-    pickImageLauncherRegister: ActivityResultLauncher<String>
+    pickImageLauncherRegister: ActivityResultLauncher<String>,
+    onUserCreated: () -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
     val errorSaving by viewModel.errorSaving.collectAsState(coroutineScope.coroutineContext)
     val state = rememberScrollState()
-
     val pickedImageUri by sharedViewModel.pickedImageUri.collectAsState(coroutineScope.coroutineContext)
 
     if (pickedImageUri != null) {
@@ -105,7 +105,7 @@ fun RegisterScreen(
                 )
                 RegisterTextField(
                     title = "Cidade",
-                    placeholder = "São Paulo",
+                    placeholder = "Ex.: São Paulo - SP",
                     textValue = viewModel.userModel.city,
                     onValueChange = viewModel::updateCity
                 )
@@ -117,7 +117,12 @@ fun RegisterScreen(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Button(
-                        onClick = { coroutineScope.launch { viewModel.registerUser() } },
+                        onClick = { coroutineScope.launch {
+                            viewModel.registerUser()
+                            if (!errorSaving.error) {
+                                onUserCreated()
+                            }
+                        } },
                         modifier = Modifier
                             .padding(16.dp)
                             .height(50.dp)
