@@ -46,7 +46,6 @@ fun UserListScreen(viewModel: UserListViewModel, onEditUserClick: (String) -> Un
     val users by viewModel.users.observeAsState(initial = null)
     val defaultAvatar = painterResource(R.drawable.default_avatar)
     val state = rememberScrollState()
-    LaunchedEffect(Unit) { state.animateScrollTo(100) }
 
     Surface(modifier = Modifier.fillMaxSize(), color = BabyBlueDark) {
         Column(
@@ -109,8 +108,7 @@ fun UserListScreen(viewModel: UserListViewModel, onEditUserClick: (String) -> Un
                                             .border(2.dp, BabyBlueDark, CircleShape)
                                     )
                                     Column(
-                                        modifier = Modifier
-                                            .fillMaxWidth()
+                                        modifier = Modifier.padding(8.dp),
                                     ) {
                                         Text(
                                             text = user.name.uppercase(Locale.getDefault()),
