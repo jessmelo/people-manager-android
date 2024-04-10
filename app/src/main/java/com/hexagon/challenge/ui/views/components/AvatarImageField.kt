@@ -55,13 +55,13 @@ fun AvatarImageField(
             modifier = Modifier
                 .size(100.dp)
                 .padding(4.dp)
-                .background(Color.Transparent)
                 .clip(CircleShape)
                 .border(
-                    width = 2.dp,
-                    color = Color.White,
+                    width = 1.dp,
+                    color = Color.Black,
                     shape = CircleShape
                 )
+                .background(Color.White)
                 .clickable { galleryLauncher() }
         )
     }
