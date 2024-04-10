@@ -83,14 +83,14 @@ fun UserListScreen(viewModel: UserListViewModel, onEditUserClick: (String) -> Un
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .padding(bottom = 4.dp, top = 4.dp),
+                                    .padding(bottom = 2.dp, top = 2.dp),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Box(
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .padding(8.dp)
-                                        .height(150.dp)
+                                        .height(160.dp)
                                         .clip(RoundedCornerShape(15.dp))
                                         .background(Color.White),
                                     contentAlignment = Alignment.TopStart
