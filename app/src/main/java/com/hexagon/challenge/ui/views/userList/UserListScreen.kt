@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -130,6 +131,7 @@ fun UserListScreen(viewModel: UserListViewModel, onEditUserClick: (String) -> Un
                                             ) {
                                                 Text(text = "Editar")
                                             }
+                                            Spacer(modifier = Modifier.width(16.dp))
                                             Button(
                                                 onClick = { viewModel.deleteUser(user) }
                                             ) {
