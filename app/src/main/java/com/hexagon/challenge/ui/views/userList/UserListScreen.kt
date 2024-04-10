@@ -21,7 +21,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -54,7 +53,6 @@ fun UserListScreen(viewModel: UserListViewModel, onEditUserClick: (String) -> Un
         ) {
             HeaderTitle(title = "Cadastrar Usuário")
             if (users == null) {
-                // Display loading object
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
