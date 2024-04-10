@@ -8,7 +8,7 @@ import com.hexagon.challenge.data.repository.UserRepository
 class UserListViewModel(private val userRepository: UserRepository): ViewModel() {
     val users = userRepository.getAll().asLiveData()
 
-    fun deleteUser(user: User) {
-        userRepository.delete(user)
+    suspend fun deleteUser(user: User): Boolean {
+        return userRepository.delete(user)
     }
 }

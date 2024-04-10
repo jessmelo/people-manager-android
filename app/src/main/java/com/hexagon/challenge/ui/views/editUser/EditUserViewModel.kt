@@ -1,5 +1,8 @@
 package com.hexagon.challenge.ui.views.editUser
 
+import android.content.Context
+import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
@@ -48,8 +51,20 @@ class EditUserViewModel(
         userModel = userModel.copy(city = city)
     }
 
-    fun updateAvatar(avatar: ByteArray) {
-        userModel = userModel.copy(avatar = avatar)
+    fun updateAvatar(avatar: String, context: Context) {
+        var avatarByteArray = ByteArray(0)
+        try {
+            context.contentResolver.openInputStream(Uri.parse(avatar))?.buffered().use {
+                if (it != null) {
+                    avatarByteArray = it.readBytes()
+                } else {
+                    Log.d("EditUserViewModel", "Error opening image file: InputStream is null")
+                }
+            }
+        } catch (e: Exception) {
+            Log.d("EditUserViewModel", "Error opening image file: $e")
+        }
+        userModel = userModel.copy(avatar = avatarByteArray)
     }
 
     fun updateActive(active: Boolean) {
@@ -77,7 +92,7 @@ class EditUserViewModel(
 
             val userUpdate = repository.update(userModel)
             if (userUpdate != 0) {
-                // show success message
+                updateErrorSaving(ErrorSaving(error = false, message = ""))
             } else {
                 updateErrorSaving(ErrorSaving(error = true, message = "Erro ao atualizar usuário"))
             }

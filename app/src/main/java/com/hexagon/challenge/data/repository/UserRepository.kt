@@ -12,5 +12,7 @@ class UserRepository (private val userDao: UserDao) {
     fun findByName(name: String): User = userDao.findByName(name)
     suspend fun insert(user: User) = userDao.insert(user)
     fun insertAll(vararg users: User) = userDao.insertAll(*users)
-    fun delete(user: User) = userDao.delete(user)
+    suspend fun delete(user: User): Boolean {
+        return userDao.delete(user) > 0
+    }
 }

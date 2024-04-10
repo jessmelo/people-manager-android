@@ -121,6 +121,7 @@ fun RegisterScreen(
                             viewModel.registerUser()
                             if (!errorSaving.error) {
                                 onUserCreated()
+                                sharedViewModel.showSnackBar(true, "Usuário cadastrado com sucesso")
                             }
                         } },
                         modifier = Modifier

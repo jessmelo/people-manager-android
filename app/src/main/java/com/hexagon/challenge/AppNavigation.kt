@@ -26,6 +26,7 @@ fun AppNavigation(
 
     NavHost(navController, startDestination = "home") {
         composable("home") { HomeScreen(
+            sharedViewModel,
             onRegisterClick = { navController.navigate("register") },
             onUserListClick = { navController.navigate("userList") }
         ) }
@@ -34,12 +35,16 @@ fun AppNavigation(
         ) { navController.navigate("home") }
         }
         composable("userList") { UserListScreen(UserListViewModel(userRepository),
-            onEditUserClick = { userID: String -> navController.navigate("editUser/$userID") }
+            onEditUserClick = { userID: String -> navController.navigate("editUser/$userID")},
+            sharedViewModel
         ) }
         composable("editUser/{userID}",
             arguments = listOf(navArgument("userID") { type = NavType.StringType })
         ){ EditUserScreen(
-            EditUserViewModel(userRepository, it.arguments?.getString("userID") ?: ""))
-        }
+            EditUserViewModel(userRepository, it.arguments?.getString("userID") ?: ""),
+            sharedViewModel,
+            pickImageLauncherRegister,
+            onFinishEdit = { navController.popBackStack() }
+        ) }
     }
 }
