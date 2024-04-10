@@ -2,6 +2,8 @@ package com.hexagon.challenge.ui.views.userList
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,12 +12,15 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -39,6 +44,8 @@ import java.util.Locale
 fun UserListScreen(viewModel: UserListViewModel, onEditUserClick: (String) -> Unit) {
     val users by viewModel.users.observeAsState(initial = null)
     val defaultAvatar = painterResource(R.drawable.default_avatar)
+    val state = rememberScrollState()
+    LaunchedEffect(Unit) { state.animateScrollTo(100) }
 
     Surface(modifier = Modifier.fillMaxSize(), color = BabyBlueDark) {
         Column(
@@ -62,60 +69,69 @@ fun UserListScreen(viewModel: UserListViewModel, onEditUserClick: (String) -> Un
                         .fillMaxSize()
                         .background(BabyBlueDark)
                         .padding(16.dp)
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxSize()
+                        .verticalScroll(state)
                     ) {
-                        if (users!!.isEmpty()) {
-                            Text(text = "Nenhum usuário cadastrado ainda.")
-                        } else {
-                            for (user in users!!) {
-                                val bitmapImage: Painter =
-                                    if (user.avatar != null && user.avatar.isNotEmpty()) {
-                                        BitmapPainter(FormatData.byteArrayToImageBitmap(user.avatar))
-                                    } else {
-                                        defaultAvatar
-                                    }
+                    if (users!!.isEmpty()) {
+                        Text(text = "Nenhum usuário cadastrado ainda.")
+                    } else {
+                        for (user in users!!) {
+                            val bitmapImage: Painter =
+                                if (user.avatar != null && user.avatar.isNotEmpty()) {
+                                    BitmapPainter(FormatData.byteArrayToImageBitmap(user.avatar))
+                                } else {
+                                    defaultAvatar
+                                }
 
-                                Row(
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(bottom = 4.dp, top = 4.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Box(
                                     modifier = Modifier
                                         .fillMaxWidth()
+                                        .padding(8.dp)
+                                        .height(150.dp)
                                         .clip(RoundedCornerShape(15.dp))
-                                        .background(Color.White)
-                                        .padding(4.dp),
-                                    verticalAlignment = Alignment.CenterVertically
+                                        .background(Color.White),
+                                    contentAlignment = Alignment.TopStart
                                 ) {
-                                    Box {
-                                        Image(
-                                            painter = bitmapImage,
-                                            contentDescription = "User Avatar",
-                                            modifier = Modifier
-                                                .padding(8.dp)
-                                                .width(50.dp)
-                                                .height(50.dp)
-                                                .clip(CircleShape)
+                                    Image(
+                                        painter = bitmapImage,
+                                        contentDescription = "User Avatar",
+                                        modifier = Modifier
+                                            .padding(8.dp)
+                                            .width(90.dp)
+                                            .height(90.dp)
+                                            .clip(CircleShape)
+                                            .border(2.dp, BabyBlueDark, CircleShape)
+                                    )
+                                    Column(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                    ) {
+                                        Text(
+                                            text = user.name.uppercase(Locale.getDefault()),
+                                            minLines = 1
                                         )
-                                        Column {
-                                            Text(
-                                                text = user.name.uppercase(Locale.getDefault()),
-                                                minLines = 1
-                                            )
-                                            Text(text = "CPF: ${user.cpf}", minLines = 1)
-                                            Text(
-                                                text = "Data de Nascimento: ${user.birthDate}",
-                                                minLines = 1
-                                            )
-                                            Text(text = "Cidade: ${user.city}", minLines = 1)
+                                        Text(text = "CPF: ${user.cpf}", minLines = 1)
+                                        Text(
+                                            text = "Data de Nascimento: ${user.birthDate}",
+                                            minLines = 1
+                                        )
+                                        Text(text = "Cidade: ${user.city}", minLines = 1)
+                                        Row(
+                                            modifier = Modifier.padding(8.dp),
+                                            horizontalArrangement = Arrangement.SpaceBetween
+                                        ) {
                                             Button(
-                                                onClick = { onEditUserClick(user.id.toString()) },
-                                                modifier = Modifier.padding(8.dp)
+                                                onClick = { onEditUserClick(user.id.toString()) }
                                             ) {
                                                 Text(text = "Editar")
                                             }
                                             Button(
-                                                onClick = { viewModel.deleteUser(user) },
-                                                modifier = Modifier.padding(8.dp)
+                                                onClick = { viewModel.deleteUser(user) }
                                             ) {
                                                 Text(text = "Excluir")
                                             }
