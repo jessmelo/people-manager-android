@@ -16,13 +16,13 @@ Funcionalidades do aplicativo:
   - Excluir usuário
   - Editar usuário
   - Visualizar lista de usuários cadastrados
-  - (TODO) Ativar ou desativar usuário 
+  - Ativar ou desativar usuário 
 
 Frameworks utilizadas:
  - Componentes UI do Jetpack Compose (Navegação e Componentes visuais do Material 3)
  - Biblioteca Room para persistência de dados na memória local
 
 TODO:
-  - Terminar implementação de funcionalidades
+  - Terminar implementação de funcionalidades - FEITO
   - Adicionar testes
-  - Ajustar design do app
+  - Ajustar design do app 
