@@ -28,7 +28,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -41,6 +40,8 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.lifecycle.asFlow
 import com.hexagon.challenge.HexagonApplication
 import com.hexagon.challenge.R
 import com.hexagon.challenge.ui.SharedViewModel
@@ -60,13 +61,17 @@ fun UserListScreen(
     sharedViewModel: SharedViewModel
 ) {
     val coroutineScope = rememberCoroutineScope()
-    val users by viewModel.users.observeAsState(initial = null)
+    val users by viewModel.users.asFlow().collectAsState(initial = null)
     val defaultAvatar = painterResource(R.drawable.default_avatar)
     val state = rememberScrollState()
     val openDeleteDialog = remember { mutableStateOf(false) }
 
     val snackbarHostState = remember { SnackbarHostState() }
     val snackbarMessage by sharedViewModel.snackbarMessage.collectAsState(coroutineScope.coroutineContext)
+
+    LaunchedEffect(users) {
+        viewModel.refreshUsers()
+    }
 
     if (snackbarMessage.show) {
         LaunchedEffect(snackbarMessage) {
@@ -85,7 +90,8 @@ fun UserListScreen(
         snackbarHost = {
             SnackbarHost(
                 hostState = snackbarHostState,
-                modifier = Modifier.padding(16.dp)
+                modifier = Modifier
+                    .padding(16.dp)
                     .fillMaxWidth(),
             )
         },
@@ -138,71 +144,96 @@ fun UserListScreen(
                                         .background(Color.White),
                                     contentAlignment = Alignment.TopStart
                                 ) {
-                                    Image(
-                                        painter = bitmapImage,
-                                        contentDescription = "User Avatar",
+                                    Row(
                                         modifier = Modifier
-                                            .padding(8.dp)
-                                            .width(90.dp)
-                                            .height(90.dp)
-                                            .clip(CircleShape)
-                                            .border(2.dp, BabyBlueDark, CircleShape)
-                                    )
-                                    Column(
-                                        modifier = Modifier.padding(8.dp),
+                                            .fillMaxWidth()
+                                            .height(120.dp)
                                     ) {
-                                        Text(
-                                            text = user.name.uppercase(Locale.getDefault()),
-                                            minLines = 1
-                                        )
-                                        Text(text = "CPF: ${user.cpf}", minLines = 1)
-                                        Text(
-                                            text = "Data de Nascimento: ${user.birthDate}",
-                                            minLines = 1
-                                        )
-                                        Text(text = "Cidade: ${user.city}", minLines = 1)
-                                        Row(
-                                            modifier = Modifier.padding(8.dp),
-                                            horizontalArrangement = Arrangement.SpaceBetween
+                                        Column(
+                                            modifier = Modifier
+                                                .weight(0.35f, true)
                                         ) {
-                                            Button(
-                                                onClick = { onEditUserClick(user.id.toString()) }
-                                            ) {
-                                                Text(text = "Editar")
+                                            Image(
+                                                painter = bitmapImage,
+                                                contentDescription = "User Avatar",
+                                                modifier = Modifier
+                                                    .padding(8.dp)
+                                                    .width(90.dp)
+                                                    .height(90.dp)
+                                                    .clip(CircleShape)
+                                                    .border(2.dp, BabyBlueDark, CircleShape)
+                                            )
+                                        }
+                                        Column(
+                                            modifier = Modifier
+                                                .padding(8.dp)
+                                                .weight(0.65f, true)
+                                        ) {
+                                            Text(
+                                                text = user.name.uppercase(Locale.getDefault()),
+                                                minLines = 1,
+                                                fontSize = 14.sp
+                                            )
+                                            Text(
+                                                text = "CPF: ${user.cpf}",
+                                                fontSize = 14.sp,
+                                                minLines = 1
+                                            )
+                                            Text(
+                                                text = "Data de Nascimento: ${user.birthDate}",
+                                                minLines = 1,
+                                                fontSize = 14.sp
+                                            )
+                                            Text(
+                                                text = "Cidade: ${user.city}",
+                                                minLines = 1,
+                                                fontSize = 14.sp
+                                            )
+                                        }
+                                    }
+                                    Row(
+                                        modifier = Modifier.padding(8.dp),
+                                        horizontalArrangement = Arrangement.SpaceBetween,
+                                        verticalAlignment = Alignment.Bottom,
+                                    ) {
+                                        Button(
+                                            onClick = { onEditUserClick(user.id.toString()) }
+                                        ) {
+                                            Text(text = "Editar")
+                                        }
+                                        Spacer(modifier = Modifier.width(16.dp))
+                                        Button(
+                                            onClick = {
+                                                openDeleteDialog.value = true
                                             }
-                                            Spacer(modifier = Modifier.width(16.dp))
-                                            Button(
-                                                onClick = {
-                                                    openDeleteDialog.value = true
-                                                }
-                                            ) {
-                                                Text(text = "Excluir")
-                                            }
-                                            when {
-                                                openDeleteDialog.value -> {
-                                                    DeleteDialog(
-                                                        onConfirmation = {
-                                                            openDeleteDialog.value = false
-                                                            coroutineScope.launch {
-                                                                val deleteSuccessful = viewModel.deleteUser(user)
-                                                                if (deleteSuccessful) {
-                                                                    sharedViewModel.showSnackBar(
-                                                                        true,
-                                                                        "Usuário excluído com sucesso"
-                                                                    )
-                                                                } else {
-                                                                    sharedViewModel.showSnackBar(
-                                                                        true,
-                                                                        "Erro ao excluir usuário"
-                                                                    )
-                                                                }
+                                        ) {
+                                            Text(text = "Excluir")
+                                        }
+                                        when {
+                                            openDeleteDialog.value -> {
+                                                DeleteDialog(
+                                                    onConfirmation = {
+                                                        openDeleteDialog.value = false
+                                                        coroutineScope.launch {
+                                                            val deleteSuccessful =
+                                                                viewModel.deleteUser(user)
+                                                            if (deleteSuccessful) {
+                                                                sharedViewModel.showSnackBar(
+                                                                    true,
+                                                                    "Usuário excluído com sucesso"
+                                                                )
+                                                            } else {
+                                                                sharedViewModel.showSnackBar(
+                                                                    true,
+                                                                    "Erro ao excluir usuário"
+                                                                )
                                                             }
-                                                        },
-                                                        onDismissRequest = {
-                                                            openDeleteDialog.value = false
-                                                        },
-                                                    )
-                                                }
+                                                        }
+                                                    },
+                                                    onDismissRequest = {
+                                                        openDeleteDialog.value = false
+                                                    },
+                                                )
                                             }
                                         }
                                     }
