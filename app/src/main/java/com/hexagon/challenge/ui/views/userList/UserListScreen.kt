@@ -195,7 +195,10 @@ fun UserListScreen(
                                             }
                                         }
                                         Row(
-                                            modifier = Modifier.padding(8.dp).requiredHeight(intrinsicSize = IntrinsicSize.Max),
+                                            modifier = Modifier
+                                                .padding(8.dp)
+                                                .requiredHeight(intrinsicSize = IntrinsicSize.Max)
+                                                .padding(bottom = 4.dp),
                                             horizontalArrangement = Arrangement.SpaceBetween,
                                             verticalAlignment = Alignment.Bottom,
                                         ) {

@@ -23,7 +23,6 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.hexagon.challenge.R
-import com.hexagon.challenge.ui.theme.BabyBlueDark
 import com.hexagon.challenge.utils.FormatData
 
 @Composable
